@@ -3,6 +3,7 @@ import type { TrophyId } from '../data/achievements';
 import { NAVIGATION_ITEMS, type NavigationItem, type SectionId } from '../data/navigation';
 import type { ProjectId } from '../data/projects';
 import type { SkillCategoryId } from '../data/skills';
+import { workshopAudio } from '../utils/workshopAudio';
 
 export type ContactLetterStage = 'closed' | 'revealing' | 'open';
 
@@ -18,6 +19,7 @@ export function useWorkshopNavigation(initialSection: SectionId | null = null) {
   const [isCameraTransitioning, setIsCameraTransitioning] = useState(false);
 
   const selectSection = useCallback((id: SectionId) => {
+    workshopAudio.playClickSound();
     setActiveSection((prev) => {
       // Do not restart transition or toggle off if the active section is clicked again
       if (prev === id) return prev;
@@ -31,6 +33,7 @@ export function useWorkshopNavigation(initialSection: SectionId | null = null) {
   }, []);
 
   const closeSection = useCallback(() => {
+    workshopAudio.playClickSound();
     setActiveSection(null);
     setArrivedSection(null);
     setSelectedTrophyId(null);
@@ -40,30 +43,37 @@ export function useWorkshopNavigation(initialSection: SectionId | null = null) {
   }, []);
 
   const selectTrophy = useCallback((id: TrophyId) => {
+    workshopAudio.playClickSound();
     setSelectedTrophyId(id);
   }, []);
 
   const clearTrophy = useCallback(() => {
+    workshopAudio.playClickSound();
     setSelectedTrophyId(null);
   }, []);
 
   const selectProject = useCallback((id: ProjectId) => {
+    workshopAudio.playClickSound();
     setSelectedProjectId(id);
   }, []);
 
   const clearProject = useCallback(() => {
+    workshopAudio.playClickSound();
     setSelectedProjectId(null);
   }, []);
 
   const selectSkillCategory = useCallback((id: SkillCategoryId) => {
+    workshopAudio.playClickSound();
     setSelectedSkillCategoryId(id);
   }, []);
 
   const clearSkillCategory = useCallback(() => {
+    workshopAudio.playClickSound();
     setSelectedSkillCategoryId(null);
   }, []);
 
   const openContactMailbox = useCallback(() => {
+    workshopAudio.playClickSound();
     setContactLetterStage((prev) => (prev === 'closed' ? 'revealing' : prev));
   }, []);
 
@@ -72,6 +82,7 @@ export function useWorkshopNavigation(initialSection: SectionId | null = null) {
   }, []);
 
   const closeContactLetter = useCallback(() => {
+    workshopAudio.playClickSound();
     setContactLetterStage('closed');
   }, []);
 

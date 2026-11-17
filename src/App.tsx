@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ArrowLeft, Gamepad2, Mail, Sword, Trophy } from 'lucide-react';
 import { WorkshopScene } from './components/Scene/WorkshopScene';
 import { AchievementCard } from './components/UI/AchievementCard';
+import { AudioToggle } from './components/UI/AudioToggle';
 import { ContactLetter } from './components/UI/ContactLetter';
 import { LoadingScreen } from './components/UI/LoadingScreen';
 import { MainMenu } from './components/UI/MainMenu';
@@ -11,6 +12,7 @@ import { getTrophyById } from './data/achievements';
 import { getProjectById } from './data/projects';
 import { getSkillCategoryById } from './data/skills';
 import { useWorkshopNavigation } from './hooks/useWorkshopNavigation';
+import { workshopAudio } from './utils/workshopAudio';
 
 export function App() {
   const [isSceneReady, setIsSceneReady] = useState(false);
@@ -44,6 +46,43 @@ export function App() {
   const handleSceneError = useCallback((error: Error) => {
     setLoadError(error);
   }, []);
+
+  useEffect(() => {
+    const handleUnlockGesture = (event: Event) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('[data-audio-toggle]')) return;
+      workshopAudio.unlockFromGesture();
+    };
+
+    const handleInteractiveClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+      if (target.closest('[data-audio-toggle]')) return;
+      if (target.closest('button, a, [role="button"], input[type="submit"]')) {
+        workshopAudio.playClickSound();
+      }
+    };
+
+    const handleVisibility = () => {
+      workshopAudio.handleVisibilityChange();
+    };
+
+    window.addEventListener('pointerdown', handleUnlockGesture, { capture: true });
+    window.addEventListener('keydown', handleUnlockGesture, { capture: true });
+    document.addEventListener('click', handleInteractiveClick, { capture: true });
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      window.removeEventListener('pointerdown', handleUnlockGesture, { capture: true });
+      window.removeEventListener('keydown', handleUnlockGesture, { capture: true });
+      document.removeEventListener('click', handleInteractiveClick, { capture: true });
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    workshopAudio.setSectionFocus(activeSection);
+  }, [activeSection]);
 
   const isAboutArrived =
     activeSection === 'about' && arrivedSection === 'about';
@@ -173,6 +212,9 @@ export function App() {
         onClose={clearSkillCategory}
       />
       <ContactLetter visible={showContactLetter} onClose={closeContactLetter} />
+
+      {/* Compact wooden sound toggle HUD */}
+      {isSceneReady && <AudioToggle />}
 
       {/* Fullscreen loading overlay while GLB downloads & initializes */}
       <LoadingScreen isSceneReady={isSceneReady} loadError={loadError} />
