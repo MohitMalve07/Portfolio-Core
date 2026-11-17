@@ -50,20 +50,13 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     hitboxSize: [0.41, 0.22],
     quadrantBounds: { xMin: -0.46, xMax: -0.05, yMin: 0.305, yMax: 0.555 },
     summary:
-      'Strong object-oriented and gameplay systems programming foundation across C#, C++, Java, Python, and JavaScript for real-time applications and web tools.',
-    skills: ['C#', 'C++', 'Java', 'Python', 'JavaScript'],
+      'Strong object-oriented and gameplay systems programming foundation across C#, C++, and Python for real-time games and interactive tools.',
+    skills: ['C#', 'C++', 'Python'],
     relatedProjects: ['Crash Course!', '3D Chess Prototype', 'Circuit Circus'],
     nodes: [
       { id: 'csharp', label: 'C#', position: [-0.222, 0.484, 0.049], align: 'left' },
       { id: 'cpp', label: 'C++', position: [-0.125, 0.484, 0.049], align: 'left' },
-      { id: 'java', label: 'Java', position: [-0.228, 0.402, 0.049], align: 'left' },
       { id: 'python', label: 'Python', position: [-0.104, 0.441, 0.049], align: 'left' },
-      {
-        id: 'javascript',
-        label: 'JavaScript',
-        position: [-0.134, 0.394, 0.049],
-        align: 'left',
-      },
     ],
   },
   {
