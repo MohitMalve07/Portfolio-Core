@@ -1,0 +1,24 @@
+# Dependencies & build output
+node_modules/
+dist/
+dist-ssr/
+
+# Local environment secrets/config
+.env
+.env.local
+.env.*.local
+
+# Editor / OS clutter
+.DS_Store
+Thumbs.db
+*.log
+*.local
+
+# Blender source files & unoptimized backup GLBs (kept locally as backups, too large for Git/Vercel)
+*.blend
+*.blend1
+public/Models/AdventureWorkshop_Lighting_Polish.glb
+public/Models/Projects.glb
+public/Models/Skill Tree.glb
+public/Models/LetterBox.glb
+public/Models/*.jpg

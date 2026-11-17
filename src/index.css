@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Fredoka', 'Nunito', ui-rounded, system-ui, sans-serif;
+    --font-sans: 'Nunito', ui-rounded, system-ui, -apple-system, sans-serif;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: var(--font-sans);
+    background-color: #120b07;
+    color: #f7ebd2;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-handwritten {
+  font-family: 'Patrick Hand', 'Fredoka', ui-rounded, cursive, sans-serif;
+}
+
+/* Warm aged ivory paper surface with subtle fiber grain and soft vignette */
+.paper-note-surface {
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255, 252, 242, 0.55) 0%, transparent 55%),
+    radial-gradient(circle at 86% 84%, rgba(168, 128, 76, 0.2) 0%, transparent 48%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(120, 86, 46, 0.024) 0px,
+      rgba(120, 86, 46, 0.024) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(120, 86, 46, 0.018) 0px,
+      rgba(120, 86, 46, 0.018) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    linear-gradient(160deg, #f7eedb 0%, #efe2c7 58%, #e2d1af 100%);
+  clip-path: polygon(
+    0.4% 0.6%,
+    32% 0%,
+    68% 0.5%,
+    99.5% 0.2%,
+    100% 34%,
+    99.3% 71%,
+    99.8% 99.2%,
+    64% 100%,
+    28% 99.4%,
+    0.6% 99.7%,
+    0% 62%,
+    0.5% 27%
+  );
+}
+
+/* Rich vertical walnut wood grain for the outer game menu board */
+.wood-walnut {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 208, 145, 0.025) 0px,
+      rgba(255, 208, 145, 0.025) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(16, 7, 3, 0.14) 0px,
+      rgba(16, 7, 3, 0.14) 3px,
+      transparent 3px,
+      transparent 26px
+    ),
+    linear-gradient(180deg, #4b2f1e 0%, #3a2214 52%, #29170d 100%);
+}
+
+/* Horizontal wood plank texture for recessed button interiors & section panels */
+.wood-plank-idle {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 210, 145, 0.03) 0px,
+      rgba(255, 210, 145, 0.03) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    linear-gradient(180deg, #563522 0%, #3f2416 55%, #2f1a0f 100%);
+}
+
+.wood-plank-active {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 244, 204, 0.06) 0px,
+      rgba(255, 244, 204, 0.06) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    linear-gradient(180deg, #eda136 0%, #d47e1d 52%, #b05e0e 100%);
+}
+
+.wood-text-shadow {
+  text-shadow: 0 2px 3px rgba(18, 8, 3, 0.85), 0 1px 0 rgba(18, 8, 3, 0.9);
+}
+
+/* Crisp fantasy adventure-game text outline + warm drop shadow */
+.game-label-shadow {
+  text-shadow:
+    -1.5px -1.5px 0 #291307,
+     1.5px -1.5px 0 #291307,
+    -1.5px  1.5px 0 #291307,
+     1.5px  1.5px 0 #291307,
+     0px    2px   0 #220f05,
+     0px    3px   4px rgba(14, 6, 2, 0.88);
+}
+
+.wood-panel-shadow {
+  box-shadow:
+    0 24px 52px rgba(6, 3, 1, 0.82),
+    0 8px 20px rgba(6, 3, 1, 0.65),
+    inset 0 2px 0 rgba(255, 216, 158, 0.22),
+    inset 0 -4px 10px rgba(12, 5, 2, 0.72);
+}
