@@ -1,4 +1,5 @@
 import { ExternalLink, Flame, Gamepad2, Layers, Mail, RefreshCw, Sparkles, Trophy } from 'lucide-react';
+import { ABOUT_ME_CONTENT } from '../../data/about';
 import { TROPHY_ACHIEVEMENTS } from '../../data/achievements';
 import { NAVIGATION_ITEMS, type SectionId } from '../../data/navigation';
 import { PROJECTS } from '../../data/projects';
@@ -99,22 +100,18 @@ export function Workshop2DFallback({
             className="paper-note-surface font-handwritten mx-auto max-w-xl p-6 text-[#2b1a0e] shadow-2xl sm:p-8"
           >
             <h2 className="text-3xl font-bold leading-none text-[#231207]">
-              Mohit Malve
+              {ABOUT_ME_CONTENT.name}
             </h2>
             <p className="mt-1 text-lg font-semibold text-[#462a16]">
-              Gameplay Programmer | Unity, C#, Online Multiplayer
+              {ABOUT_ME_CONTENT.headline}
             </p>
             <p className="mt-4 text-lg leading-snug text-[#2e1c0f]">
-              Gameplay programmer focused on online co-op and vehicle gameplay in Unity.
-              Built, tested and shipped a cross-play web and Windows co-op driving game
-              to external playtesters.
+              {ABOUT_ME_CONTENT.summary}
             </p>
             <ul className="mt-4 space-y-1 text-base text-[#2b1a0e]">
-              <li>- Location: Pune, India</li>
-              <li>- Education: B.Tech in Computer Engineering</li>
-              <li>- University: Vishwakarma Institute of Information Technology, Pune</li>
-              <li>- CGPA: 8.51</li>
-              <li>- Certification: Unity Certified Associate: Programmer (2026)</li>
+              {ABOUT_ME_CONTENT.facts.map((fact) => (
+                <li key={fact}>- {fact}</li>
+              ))}
             </ul>
           </section>
         )}

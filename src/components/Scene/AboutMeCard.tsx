@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef } from 'react';
 import { Html } from '@react-three/drei';
 import gsap from 'gsap';
+import { ABOUT_ME_CONTENT } from '../../data/about';
 import { ABOUT_ME_CARD_ANCHOR } from '../../data/cameraAnchors';
 
 interface AboutMeCardProps {
@@ -131,29 +132,21 @@ export function AboutMeCard({ visible }: AboutMeCardProps) {
 
           <header className="mb-2.5">
             <h2 className="text-[26px] font-bold leading-none tracking-tight text-[#231207]">
-              Mohit Malve
+              {ABOUT_ME_CONTENT.name}
             </h2>
             <p className="mt-0.5 text-[15.5px] font-semibold leading-snug text-[#462a16]">
-              Gameplay Programmer | Unity, C#, Online Multiplayer
+              {ABOUT_ME_CONTENT.headline}
             </p>
           </header>
 
           <p className="mb-2.5 text-[15.5px] leading-[1.28] text-[#2e1c0f]">
-            Gameplay programmer focused on online co-op and vehicle gameplay in
-            Unity. Built, tested and shipped a cross-play web and Windows co-op
-            driving game to external playtesters.
+            {ABOUT_ME_CONTENT.summary}
           </p>
 
           <ul className="space-y-0.5 text-[15px] leading-[1.25] text-[#2b1a0e]">
-            <li>- Location: Pune, India</li>
-            <li>- Education: B.Tech in Computer Engineering</li>
-            <li>
-              - University: Vishwakarma Institute of Information Technology, Pune
-            </li>
-            <li>- CGPA: 8.51</li>
-            <li>
-              - Certification: Unity Certified Associate: Programmer (2026)
-            </li>
+            {ABOUT_ME_CONTENT.facts.map((fact) => (
+              <li key={fact}>- {fact}</li>
+            ))}
           </ul>
         </div>
 

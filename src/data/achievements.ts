@@ -30,7 +30,7 @@ export const TROPHY_ACHIEVEMENTS: TrophyAchievement[] = [
     category: 'Experience',
     title: 'Peblo',
     subtitle: 'Unity Game Developer Intern, Remote',
-    periodLabel: 'February 2026 – Dec 2026',
+    periodLabel: 'February 2026 – Present',
     details: [
       'Develop gameplay features and UI systems for interactive educational games built in Unity.',
       'Integrate assets and gameplay mechanics, working with the team on implementation and testing.',
