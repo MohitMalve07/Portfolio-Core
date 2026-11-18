@@ -13,7 +13,7 @@ interface FireplaceParticlesProps {
 
 // Derived from Cabin_Stone_Fireplace flame bounds:
 // x in [-1.962, -1.318], y in [0.504, 1.103], z in [-0.486, -0.086]
-const FLAME_ORIGIN: [number, number, number] = [-1.64, 0.48, -0.14];
+const FLAME_ORIGIN: [number, number, number] = [-1.58, 0.5, -0.02];
 
 const EMBER_PALETTE = [
   new THREE.Color('#ff5e14'),
@@ -41,32 +41,32 @@ function resetEmber(
   data: EmberData,
   randomAge = false,
 ) {
-  const spark = Math.random() < 0.22 ? 1 : 0;
+  const spark = Math.random() < 0.25 ? 1 : 0;
   data.isSpark[i] = spark;
 
-  const life = spark ? 1.0 + Math.random() * 0.9 : 1.7 + Math.random() * 1.4;
+  const life = spark ? 1.15 + Math.random() * 0.95 : 1.9 + Math.random() * 1.4;
   data.lifetimes[i] = life;
   data.ages[i] = randomAge ? Math.random() * life : 0;
 
   // Spawn around firebox logs and hearth opening
-  const x = FLAME_ORIGIN[0] + (Math.random() - 0.5) * 0.42;
-  const y = FLAME_ORIGIN[1] + Math.random() * 0.22;
-  const z = FLAME_ORIGIN[2] + (Math.random() - 0.35) * 0.28;
+  const x = FLAME_ORIGIN[0] + (Math.random() - 0.5) * 0.52;
+  const y = FLAME_ORIGIN[1] + Math.random() * 0.24;
+  const z = FLAME_ORIGIN[2] + (Math.random() - 0.3) * 0.34;
 
   positions[i * 3] = x;
   positions[i * 3 + 1] = y;
   positions[i * 3 + 2] = z;
 
-  data.vx[i] = (Math.random() - 0.5) * (spark ? 0.14 : 0.08);
-  data.vy[i] = spark ? 0.38 + Math.random() * 0.28 : 0.16 + Math.random() * 0.18;
-  data.vz[i] = (Math.random() - 0.4) * (spark ? 0.11 : 0.06);
+  data.vx[i] = (Math.random() - 0.38) * (spark ? 0.18 : 0.11);
+  data.vy[i] = spark ? 0.46 + Math.random() * 0.34 : 0.21 + Math.random() * 0.21;
+  data.vz[i] = (Math.random() - 0.25) * (spark ? 0.15 : 0.09);
 
   data.baseSizes[i] = spark
-    ? 0.014 + Math.random() * 0.01
-    : 0.018 + Math.random() * 0.014;
+    ? 0.036 + Math.random() * 0.024
+    : 0.048 + Math.random() * 0.036;
   data.baseAlphas[i] = spark
-    ? 0.78 + Math.random() * 0.22
-    : 0.52 + Math.random() * 0.32;
+    ? 0.85 + Math.random() * 0.15
+    : 0.72 + Math.random() * 0.26;
   data.phases[i] = Math.random() * Math.PI * 2;
 
   const col = spark
@@ -85,7 +85,7 @@ export function FireplaceParticles({
   isTabVisibleRef,
   densityScale,
 }: FireplaceParticlesProps) {
-  const count = Math.max(24, Math.round(58 * densityScale));
+  const count = Math.max(36, Math.round(84 * densityScale));
   const pointsRef = useRef<THREE.Points>(null);
 
   const { geometry, material, state } = useMemo(() => {
@@ -119,8 +119,8 @@ export function FireplaceParticles({
     const mat = createParticleShaderMaterial({
       blending: THREE.AdditiveBlending,
       nearFadeDistance: 0.35,
-      maxPointSize: 24,
-      softness: 2.0,
+      maxPointSize: 48,
+      softness: 1.55,
     });
 
     return {
