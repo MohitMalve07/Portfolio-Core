@@ -21,6 +21,52 @@ import { WorkshopModel } from './WorkshopModel';
 const MemoizedWorkshopModel = memo(WorkshopModel);
 const MemoizedWorkshopLights = memo(WorkshopLights);
 
+/**
+ * Attempts WebGL context creation across progressive hardware/driver tiers
+ * so hybrid-GPU laptops or strict browser privacy modes don't fail on
+ * high-performance or MSAA requirements.
+ */
+function createResilientRenderer(
+  defaults: Record<string, unknown>,
+): THREE.WebGLRenderer {
+  const canvas = defaults.canvas as HTMLCanvasElement;
+  const attempts: THREE.WebGLRendererParameters[] = [
+    { canvas, antialias: true, alpha: false, powerPreference: 'default' },
+    { canvas, antialias: false, alpha: false, powerPreference: 'default' },
+    {
+      canvas,
+      antialias: false,
+      alpha: false,
+      powerPreference: 'low-power',
+      failIfMajorPerformanceCaveat: false,
+    },
+  ];
+
+  let lastError: unknown;
+  for (const params of attempts) {
+    try {
+      const renderer = new THREE.WebGLRenderer(params);
+      renderer.toneMapping = THREE.AgXToneMapping;
+      renderer.toneMappingExposure = 0.92;
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.domElement.addEventListener(
+        'webglcontextlost',
+        (event) => {
+          event.preventDefault();
+        },
+        false,
+      );
+      return renderer;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error('THREE.WebGLRenderer: Error creating WebGL context.');
+}
+
 interface WorkshopSceneProps {
   activeSection: SectionId | null;
   arrivedSection: SectionId | null;
@@ -93,13 +139,7 @@ export function WorkshopScene({
             near: 0.05,
             far: 100,
           }}
-          gl={{
-            antialias: true,
-            powerPreference: 'high-performance',
-            toneMapping: THREE.AgXToneMapping,
-            toneMappingExposure: 0.92,
-            outputColorSpace: THREE.SRGBColorSpace,
-          }}
+          gl={(defaults) => createResilientRenderer(defaults)}
         >
           <primitive object={worldBgColor} attach="background" />
           <CameraController

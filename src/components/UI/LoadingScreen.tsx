@@ -6,9 +6,14 @@ import { Flame } from 'lucide-react';
 interface LoadingScreenProps {
   isSceneReady: boolean;
   loadError: Error | null;
+  onOpenFallback?: () => void;
 }
 
-export function LoadingScreen({ isSceneReady, loadError }: LoadingScreenProps) {
+export function LoadingScreen({
+  isSceneReady,
+  loadError,
+  onOpenFallback,
+}: LoadingScreenProps) {
   const { active, progress, errors } = useProgress();
   const [hidden, setHidden] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -56,13 +61,24 @@ export function LoadingScreen({ isSceneReady, loadError }: LoadingScreenProps) {
             <p className="rounded-xl border border-red-400/40 bg-red-950/50 p-3 text-sm text-red-200">
               {combinedError}
             </p>
-            <button
-              type="button"
-              onClick={() => window.location.reload()}
-              className="wood-plank-active cursor-pointer rounded-xl border-2 border-[#ffd27d] px-5 py-2 text-sm font-bold text-[#fff8e8] transition hover:brightness-110"
-            >
-              Retry Loading
-            </button>
+            <div className="flex flex-wrap items-center justify-center gap-2.5">
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="wood-plank-active cursor-pointer rounded-xl border-2 border-[#ffd27d] px-5 py-2 text-sm font-bold text-[#fff8e8] transition hover:brightness-110"
+              >
+                Retry Loading
+              </button>
+              {onOpenFallback && (
+                <button
+                  type="button"
+                  onClick={onOpenFallback}
+                  className="wood-plank-idle cursor-pointer rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-sm font-bold text-[#ffefc6] transition hover:border-[#ffd27d] hover:brightness-110"
+                >
+                  Open 2D Workshop
+                </button>
+              )}
+            </div>
           </div>
         ) : (
           <>

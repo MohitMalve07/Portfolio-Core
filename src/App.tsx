@@ -8,6 +8,7 @@ import { LoadingScreen } from './components/UI/LoadingScreen';
 import { MainMenu } from './components/UI/MainMenu';
 import { ProjectInfoCard } from './components/UI/ProjectInfoCard';
 import { SkillInfoCard } from './components/UI/SkillInfoCard';
+import { Workshop2DFallback } from './components/UI/Workshop2DFallback';
 import { getTrophyById } from './data/achievements';
 import { getProjectById } from './data/projects';
 import { getSkillCategoryById } from './data/skills';
@@ -15,8 +16,13 @@ import { useWorkshopNavigation } from './hooks/useWorkshopNavigation';
 import { workshopAudio } from './utils/workshopAudio';
 
 export function App() {
-  const [isSceneReady, setIsSceneReady] = useState(false);
+  const wants2D =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('view') === '2d';
+  const [isSceneReady, setIsSceneReady] = useState(wants2D);
   const [loadError, setLoadError] = useState<Error | null>(null);
+  const [isWebGLFallback, setIsWebGLFallback] = useState(wants2D);
+  const [sceneRetryKey, setSceneRetryKey] = useState(0);
   const {
     activeSection,
     arrivedSection,
@@ -44,8 +50,32 @@ export function App() {
   }, []);
 
   const handleSceneError = useCallback((error: Error) => {
+    if (/webgl|context/i.test(error.message)) {
+      setIsWebGLFallback(true);
+      setIsSceneReady(true);
+      setLoadError(null);
+      return;
+    }
     setLoadError(error);
   }, []);
+
+  const handleEnterFallback = useCallback(() => {
+    setIsWebGLFallback(true);
+    setIsSceneReady(true);
+    setLoadError(null);
+  }, []);
+
+  const handleRetry3D = useCallback(() => {
+    setIsWebGLFallback(false);
+    setIsSceneReady(false);
+    setLoadError(null);
+    setSceneRetryKey((k) => k + 1);
+  }, []);
+
+  const handleOpenContact2D = useCallback(() => {
+    openContactMailbox();
+    completeContactReveal();
+  }, [openContactMailbox, completeContactReveal]);
 
   useEffect(() => {
     const handleUnlockGesture = (event: Event) => {
@@ -84,48 +114,62 @@ export function App() {
     workshopAudio.setSectionFocus(activeSection);
   }, [activeSection]);
 
+  const effectiveArrived = isWebGLFallback ? activeSection : arrivedSection;
   const isAboutArrived =
-    activeSection === 'about' && arrivedSection === 'about';
+    activeSection === 'about' && effectiveArrived === 'about';
   const isExperienceArrived =
-    activeSection === 'experience' && arrivedSection === 'experience';
+    activeSection === 'experience' && effectiveArrived === 'experience';
   const isProjectsArrived =
-    activeSection === 'projects' && arrivedSection === 'projects';
+    activeSection === 'projects' && effectiveArrived === 'projects';
   const isSkillsArrived =
-    activeSection === 'skills' && arrivedSection === 'skills';
+    activeSection === 'skills' && effectiveArrived === 'skills';
   const isContactArrived =
-    activeSection === 'contact' && arrivedSection === 'contact';
+    activeSection === 'contact' && effectiveArrived === 'contact';
 
-  const selectedTrophy = isExperienceArrived
-    ? getTrophyById(selectedTrophyId)
-    : null;
-  const selectedProject = isProjectsArrived
-    ? getProjectById(selectedProjectId)
-    : null;
-  const selectedSkillCategory = isSkillsArrived
-    ? getSkillCategoryById(selectedSkillCategoryId)
-    : null;
+  const selectedTrophy =
+    !isWebGLFallback && isExperienceArrived
+      ? getTrophyById(selectedTrophyId)
+      : null;
+  const selectedProject =
+    !isWebGLFallback && isProjectsArrived
+      ? getProjectById(selectedProjectId)
+      : null;
+  const selectedSkillCategory =
+    !isWebGLFallback && isSkillsArrived
+      ? getSkillCategoryById(selectedSkillCategoryId)
+      : null;
   const showContactLetter = isContactArrived && contactLetterStage === 'open';
 
   return (
     <main className="relative h-screen w-screen overflow-hidden bg-[#120b07]">
-      <WorkshopScene
-        activeSection={activeSection}
-        arrivedSection={arrivedSection}
-        selectedTrophyId={selectedTrophyId}
-        selectedProjectId={selectedProjectId}
-        selectedSkillCategoryId={selectedSkillCategoryId}
-        contactLetterStage={contactLetterStage}
-        onSceneReady={handleSceneReady}
-        onSceneError={handleSceneError}
-        onCameraTransitionStart={handleTransitionStart}
-        onCameraTransitionComplete={handleTransitionComplete}
-        onCloseSection={closeSection}
-        onSelectTrophy={selectTrophy}
-        onSelectProject={selectProject}
-        onSelectSkillCategory={selectSkillCategory}
-        onOpenContactMailbox={openContactMailbox}
-        onCompleteContactReveal={completeContactReveal}
-      />
+      {isWebGLFallback ? (
+        <Workshop2DFallback
+          activeSection={activeSection}
+          onSelectSection={selectSection}
+          onOpenContactLetter={handleOpenContact2D}
+          onRetry3D={handleRetry3D}
+        />
+      ) : (
+        <WorkshopScene
+          key={sceneRetryKey}
+          activeSection={activeSection}
+          arrivedSection={arrivedSection}
+          selectedTrophyId={selectedTrophyId}
+          selectedProjectId={selectedProjectId}
+          selectedSkillCategoryId={selectedSkillCategoryId}
+          contactLetterStage={contactLetterStage}
+          onSceneReady={handleSceneReady}
+          onSceneError={handleSceneError}
+          onCameraTransitionStart={handleTransitionStart}
+          onCameraTransitionComplete={handleTransitionComplete}
+          onCloseSection={closeSection}
+          onSelectTrophy={selectTrophy}
+          onSelectProject={selectProject}
+          onSelectSkillCategory={selectSkillCategory}
+          onOpenContactMailbox={openContactMailbox}
+          onCompleteContactReveal={completeContactReveal}
+        />
+      )}
 
       {/* Game-style left navigation menu */}
       <MainMenu
@@ -167,8 +211,8 @@ export function App() {
         </div>
       )}
 
-      {/* Subtle prompts when arriving at interactive sections */}
-      {isExperienceArrived && !selectedTrophy && (
+      {/* Subtle prompts when arriving at interactive 3D sections */}
+      {!isWebGLFallback && isExperienceArrived && !selectedTrophy && (
         <div className="fixed bottom-5 right-5 z-20 hidden sm:block">
           <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-xs font-semibold text-[#f3dfb8]">
             <Trophy className="h-4 w-4 text-[#f5b449]" />
@@ -177,7 +221,7 @@ export function App() {
         </div>
       )}
 
-      {isProjectsArrived && !selectedProject && (
+      {!isWebGLFallback && isProjectsArrived && !selectedProject && (
         <div className="fixed bottom-5 right-5 z-20 hidden sm:block">
           <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-xs font-semibold text-[#f3dfb8]">
             <Gamepad2 className="h-4 w-4 text-[#f5b449]" />
@@ -186,7 +230,7 @@ export function App() {
         </div>
       )}
 
-      {isSkillsArrived && !selectedSkillCategory && (
+      {!isWebGLFallback && isSkillsArrived && !selectedSkillCategory && (
         <div className="fixed bottom-5 right-5 z-20 hidden sm:block">
           <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-xs font-semibold text-[#f3dfb8]">
             <Sword className="h-4 w-4 text-[#f5b449]" />
@@ -195,7 +239,7 @@ export function App() {
         </div>
       )}
 
-      {isContactArrived && contactLetterStage === 'closed' && (
+      {!isWebGLFallback && isContactArrived && contactLetterStage === 'closed' && (
         <div className="fixed bottom-5 right-5 z-20 hidden sm:block">
           <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-xs font-semibold text-[#f3dfb8]">
             <Mail className="h-4 w-4 text-[#f5b449]" />
@@ -217,7 +261,13 @@ export function App() {
       {isSceneReady && <AudioToggle />}
 
       {/* Fullscreen loading overlay while GLB downloads & initializes */}
-      <LoadingScreen isSceneReady={isSceneReady} loadError={loadError} />
+      {!isWebGLFallback && (
+        <LoadingScreen
+          isSceneReady={isSceneReady}
+          loadError={loadError}
+          onOpenFallback={handleEnterFallback}
+        />
+      )}
     </main>
   );
 }
