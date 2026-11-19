@@ -70,7 +70,7 @@ export function Workshop2DFallback({
               </button>
             </div>
 
-            <p className="mt-4 text-sm leading-relaxed text-[#efe0c4]">
+            <p className="mt-4 text-[15px] leading-relaxed text-[#efe0c4] sm:text-sm">
               WebGL 3D rendering is blocked or unavailable in this browser session, so you&apos;re viewing the interactive 2D workshop view. Explore every section using the wooden menu or cards below:
             </p>
 
@@ -80,12 +80,12 @@ export function Workshop2DFallback({
                   key={item.id}
                   type="button"
                   onClick={() => onSelectSection(item.id)}
-                  className="wood-plank-idle flex cursor-pointer flex-col items-start gap-1 rounded-xl border-2 border-[#b47c3c]/85 p-4 text-left transition hover:scale-[1.01] hover:border-[#ffd27d] hover:brightness-110"
+                  className="wood-plank-idle flex cursor-pointer flex-col items-start gap-1.5 rounded-xl border-2 border-[#b47c3c]/85 p-4 text-left transition hover:scale-[1.01] hover:border-[#ffd27d] hover:brightness-110"
                 >
-                  <span className="font-display text-sm font-bold text-[#ffe3a3]">
+                  <span className="font-display text-base font-bold text-[#ffe3a3] sm:text-sm">
                     {item.order}. {item.label}
                   </span>
-                  <span className="text-xs leading-snug text-[#dfc9a2]">
+                  <span className="text-[13.5px] leading-snug text-[#dfc9a2] sm:text-xs">
                     {item.subtitle}
                   </span>
                 </button>
@@ -128,24 +128,24 @@ export function Workshop2DFallback({
               {TROPHY_ACHIEVEMENTS.map((item) => (
                 <article
                   key={item.id}
-                  className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-4"
+                  className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-5 sm:p-4"
                 >
-                  <p className="text-[11px] font-bold tracking-wider text-[#f3be66] uppercase">
+                  <p className="text-xs font-bold tracking-wider text-[#f3be66] uppercase md:text-[11px]">
                     {item.category} · {item.periodLabel}
                   </p>
-                  <h3 className="font-display mt-1 text-lg font-bold text-[#fff4d4]">
+                  <h3 className="font-display mt-1 text-xl font-bold text-[#fff4d4] md:text-lg">
                     {item.title}
                   </h3>
                   {item.subtitle && (
-                    <p className="text-xs font-semibold text-[#e6cca0]">
+                    <p className="text-sm font-semibold text-[#e6cca0] md:text-xs">
                       {item.subtitle}
                     </p>
                   )}
                   {item.details.length > 0 && (
-                    <ul className="mt-2.5 space-y-1.5 border-t border-[#8e5d29]/45 pt-2.5 text-xs leading-relaxed text-[#efe0c4]">
+                    <ul className="mt-3 space-y-2 border-t border-[#8e5d29]/45 pt-3 text-[15px] leading-relaxed text-[#efe0c4] md:mt-2.5 md:space-y-1.5 md:pt-2.5 md:text-xs">
                       {item.details.map((detail) => (
                         <li key={detail} className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#f5b449]" />
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#f5b449] md:mt-1.5" />
                           <span>{detail}</span>
                         </li>
                       ))}
@@ -169,41 +169,41 @@ export function Workshop2DFallback({
               {PROJECTS.map((project) => (
                 <article
                   key={project.id}
-                  className="wood-walnut wood-panel-shadow flex flex-col justify-between rounded-xl border-2 border-[#b47c3c] p-4"
+                  className="wood-walnut wood-panel-shadow flex flex-col justify-between rounded-xl border-2 border-[#b47c3c] p-5 md:p-4"
                 >
                   <div>
-                    <p className="text-[11px] font-bold tracking-wider text-[#f3be66] uppercase">
+                    <p className="text-xs font-bold tracking-wider text-[#f3be66] uppercase md:text-[11px]">
                       {project.objectLabel}
                     </p>
-                    <h3 className="font-display mt-1 text-lg font-bold text-[#fff4d4]">
+                    <h3 className="font-display mt-1 text-xl font-bold text-[#fff4d4] md:text-lg">
                       {project.title}
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-[#efe0c4]">
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#efe0c4] md:text-xs">
                       {project.description}
                     </p>
                   </div>
-                  <div className="mt-4 flex flex-wrap gap-2 border-t border-[#8e5d29]/45 pt-3">
+                  <div className="mt-4 flex flex-wrap gap-2.5 border-t border-[#8e5d29]/45 pt-3.5 md:gap-2 md:pt-3">
                     <a
                       href={project.playUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="wood-plank-active inline-flex items-center gap-1.5 rounded-lg border border-[#ffd47a] px-3 py-1.5 text-xs font-bold text-[#fff8e8] transition hover:brightness-110"
+                      className="wood-plank-active inline-flex items-center gap-1.5 rounded-lg border border-[#ffd47a] px-4 py-2 text-[13px] font-bold text-[#fff8e8] transition hover:brightness-110 md:px-3 md:py-1.5 md:text-xs"
                     >
                       <span>Play Demo</span>
-                      <ExternalLink className="h-3 w-3" />
+                      <ExternalLink className="h-3.5 w-3.5 md:h-3 md:w-3" />
                     </a>
                     {project.githubUrl ? (
                       <a
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="wood-plank-idle inline-flex items-center gap-1.5 rounded-lg border border-[#b47c3c] px-3 py-1.5 text-xs font-bold text-[#ffefc6] transition hover:border-[#ffe08a]"
+                        className="wood-plank-idle inline-flex items-center gap-1.5 rounded-lg border border-[#b47c3c] px-4 py-2 text-[13px] font-bold text-[#ffefc6] transition hover:border-[#ffe08a] md:px-3 md:py-1.5 md:text-xs"
                       >
                         <span>GitHub</span>
-                        <ExternalLink className="h-3 w-3" />
+                        <ExternalLink className="h-3.5 w-3.5 md:h-3 md:w-3" />
                       </a>
                     ) : (
-                      <span className="inline-flex items-center rounded-lg border border-[#7b4f21]/70 bg-[#231309]/80 px-2.5 py-1.5 text-[11px] font-semibold text-[#c5ab82]">
+                      <span className="inline-flex items-center rounded-lg border border-[#7b4f21]/70 bg-[#231309]/80 px-3 py-2 text-xs font-semibold text-[#c5ab82] md:px-2.5 md:py-1.5 md:text-[11px]">
                         {project.githubStatusLabel ?? 'Coming Soon'}
                       </span>
                     )}
@@ -226,19 +226,19 @@ export function Workshop2DFallback({
               {SKILL_CATEGORIES.map((category) => (
                 <article
                   key={category.id}
-                  className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-4"
+                  className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-5 md:p-4"
                 >
-                  <h3 className="font-display text-lg font-bold text-[#fff4d4]">
+                  <h3 className="font-display text-xl font-bold text-[#fff4d4] md:text-lg">
                     {category.title}
                   </h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-[#efe0c4]">
+                  <p className="mt-1.5 text-[15px] leading-relaxed text-[#efe0c4] md:text-xs">
                     {category.summary}
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
+                  <div className="mt-3 flex flex-wrap gap-2 md:gap-1.5">
                     {category.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="rounded-md border border-[#b47c3c]/80 bg-[#251309]/90 px-2.5 py-1 text-xs font-bold text-[#ffe29e]"
+                        className="rounded-md border border-[#b47c3c]/80 bg-[#251309]/90 px-3 py-1.5 text-[13px] font-bold text-[#ffe29e] md:px-2.5 md:py-1 md:text-xs"
                       >
                         {skill}
                       </span>

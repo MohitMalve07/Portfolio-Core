@@ -209,14 +209,14 @@ export function ContactLetter({ visible, onClose }: ContactLetterProps) {
           </div>
 
           {/* Letter Body */}
-          <div className="relative mt-2.5 space-y-1.5 text-[15.5px] leading-[1.28] text-[#2f1d10]">
+          <div className="relative mt-2.5 space-y-1.5 text-[16.5px] leading-[1.32] text-[#2f1d10] md:text-[15.5px] md:leading-[1.28]">
             <p className="font-bold text-[#241207]">
               {CONTACT_CONTENT.greeting}
             </p>
             {CONTACT_CONTENT.paragraphs.map((p) => (
               <p key={p}>{p}</p>
             ))}
-            <p className="pt-0.5 text-right text-[17px] font-bold text-[#241207]">
+            <p className="pt-0.5 text-right text-[18px] font-bold text-[#241207] md:text-[17px]">
               {CONTACT_CONTENT.signature}
             </p>
           </div>
@@ -306,7 +306,7 @@ export function ContactLetter({ visible, onClose }: ContactLetterProps) {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Name"
                     aria-label="Name"
-                    className="w-full rounded border border-[#a88352]/75 bg-[#fbf4e4]/90 px-2.5 py-1 text-xs text-[#2d1a0b] placeholder:text-[#7c5c3e]/80 focus:border-[#8a5724] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#f1e5cb]/65 disabled:text-[#6b4d31]"
+                    className="w-full rounded border border-[#a88352]/75 bg-[#fbf4e4]/90 px-3 py-1.5 text-base text-[#2d1a0b] placeholder:text-[#7c5c3e]/80 focus:border-[#8a5724] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#f1e5cb]/65 disabled:text-[#6b4d31] md:px-2.5 md:py-1 md:text-xs"
                   />
                   <input
                     type="email"
@@ -317,7 +317,7 @@ export function ContactLetter({ visible, onClose }: ContactLetterProps) {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     aria-label="Email"
-                    className="w-full rounded border border-[#a88352]/75 bg-[#fbf4e4]/90 px-2.5 py-1 text-xs text-[#2d1a0b] placeholder:text-[#7c5c3e]/80 focus:border-[#8a5724] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#f1e5cb]/65 disabled:text-[#6b4d31]"
+                    className="w-full rounded border border-[#a88352]/75 bg-[#fbf4e4]/90 px-3 py-1.5 text-base text-[#2d1a0b] placeholder:text-[#7c5c3e]/80 focus:border-[#8a5724] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#f1e5cb]/65 disabled:text-[#6b4d31] md:px-2.5 md:py-1 md:text-xs"
                   />
                 </div>
 
@@ -330,7 +330,7 @@ export function ContactLetter({ visible, onClose }: ContactLetterProps) {
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="Subject"
                   aria-label="Subject"
-                  className="w-full rounded border border-[#a88352]/75 bg-[#fbf4e4]/90 px-2.5 py-1 text-xs text-[#2d1a0b] placeholder:text-[#7c5c3e]/80 focus:border-[#8a5724] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#f1e5cb]/65 disabled:text-[#6b4d31]"
+                  className="w-full rounded border border-[#a88352]/75 bg-[#fbf4e4]/90 px-3 py-1.5 text-base text-[#2d1a0b] placeholder:text-[#7c5c3e]/80 focus:border-[#8a5724] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#f1e5cb]/65 disabled:text-[#6b4d31] md:px-2.5 md:py-1 md:text-xs"
                 />
 
                 <textarea
@@ -342,7 +342,7 @@ export function ContactLetter({ visible, onClose }: ContactLetterProps) {
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Message..."
                   aria-label="Message"
-                  className="w-full resize-none rounded border border-[#a88352]/75 bg-[#fbf4e4]/90 px-2.5 py-1 text-xs text-[#2d1a0b] placeholder:text-[#7c5c3e]/80 focus:border-[#8a5724] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#f1e5cb]/65 disabled:text-[#6b4d31]"
+                  className="w-full resize-none rounded border border-[#a88352]/75 bg-[#fbf4e4]/90 px-3 py-1.5 text-base text-[#2d1a0b] placeholder:text-[#7c5c3e]/80 focus:border-[#8a5724] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#f1e5cb]/65 disabled:text-[#6b4d31] md:px-2.5 md:py-1 md:text-xs"
                 />
 
                 {status === 'error' && errorMsg && (

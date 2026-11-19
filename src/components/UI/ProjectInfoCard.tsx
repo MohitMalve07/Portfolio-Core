@@ -1,7 +1,19 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ExternalLink, Gamepad2, Lock, X } from 'lucide-react';
-import type { ProjectInfo } from '../../data/projects';
+import {
+  PROJECTS,
+  type ProjectId,
+  type ProjectInfo,
+} from '../../data/projects';
+import { MobileItemTabs } from './MobileItemTabs';
+
+const PROJECT_TABS: readonly { id: ProjectId; label: string }[] = PROJECTS.map(
+  (p) => ({
+    id: p.id,
+    label: p.title,
+  }),
+);
 
 function GitHubMark({ className }: { className?: string }) {
   return (
@@ -18,6 +30,7 @@ function GitHubMark({ className }: { className?: string }) {
 
 interface ProjectInfoCardProps {
   project: ProjectInfo | null;
+  onSelectProject?: (id: ProjectId) => void;
   onClose: () => void;
 }
 
@@ -25,7 +38,11 @@ interface ProjectInfoCardProps {
  * Compact dark walnut & golden-beveled card showing details and external
  * Play Demo / GitHub actions for the selected collectible project model.
  */
-export function ProjectInfoCard({ project, onClose }: ProjectInfoCardProps) {
+export function ProjectInfoCard({
+  project,
+  onSelectProject,
+  onClose,
+}: ProjectInfoCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,10 +93,10 @@ export function ProjectInfoCard({ project, onClose }: ProjectInfoCardProps) {
                 <Gamepad2 className="h-5 w-5" strokeWidth={2.2} />
               </div>
               <div className="min-w-0">
-                <p className="text-[11px] font-bold tracking-wider text-[#f3be66] uppercase">
+                <p className="text-xs font-bold tracking-wider text-[#f3be66] uppercase md:text-[11px]">
                   Project Collectible · {project.objectLabel}
                 </p>
-                <h2 className="font-display game-label-shadow mt-0.5 text-lg font-bold leading-snug text-[#fff4d4]">
+                <h2 className="font-display game-label-shadow mt-0.5 text-xl font-bold leading-snug text-[#fff4d4] md:text-lg">
                   {project.title}
                 </h2>
               </div>
@@ -95,9 +112,17 @@ export function ProjectInfoCard({ project, onClose }: ProjectInfoCardProps) {
             </button>
           </div>
 
+          {onSelectProject && (
+            <MobileItemTabs
+              options={PROJECT_TABS}
+              activeId={project.id}
+              onSelect={onSelectProject}
+            />
+          )}
+
           {/* Description */}
           <div className="relative mt-3 space-y-3.5 text-sm text-[#f3e4c8]">
-            <p className="rounded-lg border border-[#8e5d29]/55 bg-[#221209]/75 p-3 text-[13px] leading-relaxed text-[#efe0c4]">
+            <p className="rounded-lg border border-[#8e5d29]/55 bg-[#221209]/75 p-3.5 text-[15px] leading-relaxed text-[#efe0c4] md:p-3 md:text-[13px]">
               {project.description}
             </p>
 
@@ -107,9 +132,9 @@ export function ProjectInfoCard({ project, onClose }: ProjectInfoCardProps) {
                 href={project.playUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="wood-plank-active inline-flex items-center gap-1.5 rounded-lg border-2 border-[#ffe08a] px-3.5 py-1.5 text-xs font-bold text-[#fff9e6] shadow-md transition hover:brightness-110 active:translate-y-px"
+                className="wood-plank-active inline-flex items-center gap-1.5 rounded-lg border-2 border-[#ffe08a] px-4 py-2 text-sm font-bold text-[#fff9e6] shadow-md transition hover:brightness-110 active:translate-y-px md:px-3.5 md:py-1.5 md:text-xs"
               >
-                <ExternalLink className="h-3.5 w-3.5" />
+                <ExternalLink className="h-4 w-4 md:h-3.5 md:w-3.5" />
                 <span className="font-display tracking-wide">Play Demo</span>
               </a>
 
@@ -118,9 +143,9 @@ export function ProjectInfoCard({ project, onClose }: ProjectInfoCardProps) {
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="wood-plank-idle inline-flex items-center gap-1.5 rounded-lg border-2 border-[#c8934b] px-3.5 py-1.5 text-xs font-bold text-[#ffefc6] shadow-md transition hover:border-[#ffe08a] hover:brightness-110 active:translate-y-px"
+                  className="wood-plank-idle inline-flex items-center gap-1.5 rounded-lg border-2 border-[#c8934b] px-4 py-2 text-sm font-bold text-[#ffefc6] shadow-md transition hover:border-[#ffe08a] hover:brightness-110 active:translate-y-px md:px-3.5 md:py-1.5 md:text-xs"
                 >
-                  <GitHubMark className="h-3.5 w-3.5 text-[#f5b951]" />
+                  <GitHubMark className="h-4 w-4 text-[#f5b951] md:h-3.5 md:w-3.5" />
                   <span className="font-display tracking-wide">GitHub</span>
                 </a>
               ) : (
@@ -129,9 +154,9 @@ export function ProjectInfoCard({ project, onClose }: ProjectInfoCardProps) {
                   disabled
                   aria-disabled="true"
                   title="Repository is private until demo release"
-                  className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border-2 border-[#6e4b26] bg-[#25140b]/85 px-3.5 py-1.5 text-xs font-bold text-[#bda27c] opacity-85"
+                  className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border-2 border-[#6e4b26] bg-[#25140b]/85 px-4 py-2 text-sm font-bold text-[#bda27c] opacity-85 md:px-3.5 md:py-1.5 md:text-xs"
                 >
-                  <Lock className="h-3.5 w-3.5 text-[#c79857]" />
+                  <Lock className="h-4 w-4 text-[#c79857] md:h-3.5 md:w-3.5" />
                   <span className="font-display tracking-wide">
                     GitHub · {project.githubStatusLabel ?? 'Coming Soon'}
                   </span>

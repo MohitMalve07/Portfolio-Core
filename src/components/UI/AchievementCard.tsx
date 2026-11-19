@@ -1,10 +1,27 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Award, BookOpen, Briefcase, Trophy, X } from 'lucide-react';
-import type { TrophyAchievement } from '../../data/achievements';
+import {
+  TROPHY_ACHIEVEMENTS,
+  type TrophyAchievement,
+  type TrophyId,
+} from '../../data/achievements';
+import { MobileItemTabs } from './MobileItemTabs';
+
+const TROPHY_TABS: readonly { id: TrophyId; label: string }[] =
+  TROPHY_ACHIEVEMENTS.map((t) => ({
+    id: t.id,
+    label:
+      t.id === 'unity-cert'
+        ? 'Unity Cert'
+        : t.id === 'publication'
+          ? 'Publication'
+          : t.title,
+  }));
 
 interface AchievementCardProps {
   achievement: TrophyAchievement | null;
+  onSelectTrophy?: (id: TrophyId) => void;
   onClose: () => void;
 }
 
@@ -18,7 +35,11 @@ const CATEGORY_ICON = {
  * Compact dark-walnut & golden-beveled achievement card displayed when
  * inspecting an individual trophy on the shelf.
  */
-export function AchievementCard({ achievement, onClose }: AchievementCardProps) {
+export function AchievementCard({
+  achievement,
+  onSelectTrophy,
+  onClose,
+}: AchievementCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -73,11 +94,11 @@ export function AchievementCard({ achievement, onClose }: AchievementCardProps) 
                 <Trophy className="h-5 w-5" strokeWidth={2.2} />
               </div>
               <div className="min-w-0">
-                <div className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-[#f3be66] uppercase">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#f3be66] uppercase md:text-[11px]">
                   <CategoryIcon className="h-3.5 w-3.5 text-[#f5b449]" />
                   <span>{achievement.category}</span>
                 </div>
-                <h2 className="font-display game-label-shadow mt-0.5 text-lg font-bold leading-snug text-[#fff4d4]">
+                <h2 className="font-display game-label-shadow mt-0.5 text-xl font-bold leading-snug text-[#fff4d4] md:text-lg">
                   {achievement.title}
                 </h2>
               </div>
@@ -93,23 +114,31 @@ export function AchievementCard({ achievement, onClose }: AchievementCardProps) 
             </button>
           </div>
 
+          {onSelectTrophy && (
+            <MobileItemTabs
+              options={TROPHY_TABS}
+              activeId={achievement.id}
+              onSelect={onSelectTrophy}
+            />
+          )}
+
           {/* Role / Organization / Date & Details */}
           <div className="relative mt-3 space-y-2.5 text-sm text-[#f3e4c8]">
             {achievement.subtitle && (
-              <p className="text-[13.5px] font-bold text-[#ffd88f]">
+              <p className="text-[15px] font-bold text-[#ffd88f] md:text-[13.5px]">
                 {achievement.subtitle}
               </p>
             )}
 
-            <p className="inline-block rounded-md border border-[#8e5d29]/65 bg-[#241309]/85 px-2.5 py-0.5 text-xs font-semibold text-[#e9cb99]">
+            <p className="inline-block rounded-md border border-[#8e5d29]/65 bg-[#241309]/85 px-2.5 py-1 text-[13px] font-semibold text-[#e9cb99] md:py-0.5 md:text-xs">
               {achievement.periodLabel}
             </p>
 
             {achievement.details.length > 0 && (
-              <ul className="space-y-1.5 rounded-lg border border-[#8e5d29]/55 bg-[#221209]/75 p-3 text-[13px] leading-relaxed text-[#efe0c4]">
+              <ul className="space-y-2 rounded-lg border border-[#8e5d29]/55 bg-[#221209]/75 p-3.5 text-[15px] leading-relaxed text-[#efe0c4] md:space-y-1.5 md:p-3 md:text-[13px]">
                 {achievement.details.map((line) => (
                   <li key={line} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#f0ad42]" />
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#f0ad42] md:mt-1.5" />
                     <span>{line}</span>
                   </li>
                 ))}

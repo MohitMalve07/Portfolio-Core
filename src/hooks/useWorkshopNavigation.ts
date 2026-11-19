@@ -42,8 +42,8 @@ export function useWorkshopNavigation(initialSection: SectionId | null = null) {
     setContactLetterStage('closed');
   }, []);
 
-  const selectTrophy = useCallback((id: TrophyId) => {
-    workshopAudio.playClickSound();
+  const selectTrophy = useCallback((id: TrophyId, playSound = true) => {
+    if (playSound) workshopAudio.playClickSound();
     setSelectedTrophyId(id);
   }, []);
 
@@ -52,8 +52,8 @@ export function useWorkshopNavigation(initialSection: SectionId | null = null) {
     setSelectedTrophyId(null);
   }, []);
 
-  const selectProject = useCallback((id: ProjectId) => {
-    workshopAudio.playClickSound();
+  const selectProject = useCallback((id: ProjectId, playSound = true) => {
+    if (playSound) workshopAudio.playClickSound();
     setSelectedProjectId(id);
   }, []);
 
@@ -62,10 +62,13 @@ export function useWorkshopNavigation(initialSection: SectionId | null = null) {
     setSelectedProjectId(null);
   }, []);
 
-  const selectSkillCategory = useCallback((id: SkillCategoryId) => {
-    workshopAudio.playClickSound();
-    setSelectedSkillCategoryId(id);
-  }, []);
+  const selectSkillCategory = useCallback(
+    (id: SkillCategoryId, playSound = true) => {
+      if (playSound) workshopAudio.playClickSound();
+      setSelectedSkillCategoryId(id);
+    },
+    [],
+  );
 
   const clearSkillCategory = useCallback(() => {
     workshopAudio.playClickSound();

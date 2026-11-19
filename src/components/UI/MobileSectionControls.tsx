@@ -76,16 +76,16 @@ export function MobileSectionControls({
           aria-label="Quick section navigation"
           className="fixed inset-x-3 bottom-3 z-20"
         >
-          <div className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-2">
-            <div className="grid grid-cols-5 gap-1.5">
+          <div className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-2.5">
+            <div className="flex flex-wrap justify-center gap-2">
               {NAVIGATION_ITEMS.map((item) => (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => onSelectSection(item.id)}
-                  className="wood-plank-idle flex cursor-pointer items-center justify-center rounded-lg border border-[#c8934b]/90 px-1 py-2 text-[11px] font-bold leading-tight text-[#ffefc6] transition active:translate-y-px"
+                  className="wood-plank-idle flex cursor-pointer items-center justify-center rounded-lg border border-[#c8934b]/90 px-3.5 py-2 text-[13px] font-bold leading-none text-[#ffefc6] transition active:translate-y-px"
                 >
-                  <span className="truncate">{item.label}</span>
+                  <span>{item.label}</span>
                 </button>
               ))}
             </div>
@@ -96,18 +96,18 @@ export function MobileSectionControls({
       {/* Quick item pickers inside interactive 3D sections */}
       {!hasOpenModal && isExperienceArrived && (
         <div className="fixed inset-x-3 bottom-3 z-20">
-          <div className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-2.5">
-            <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold text-[#f3be66]">
-              <Trophy className="h-3.5 w-3.5 shrink-0" />
+          <div className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-3">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-bold text-[#f3be66]">
+              <Trophy className="h-4 w-4 shrink-0" />
               <span>Tap a trophy or select below to inspect</span>
             </p>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {TROPHY_ACHIEVEMENTS.map((trophy) => (
                 <button
                   key={trophy.id}
                   type="button"
                   onClick={() => onSelectTrophy(trophy.id)}
-                  className="wood-plank-idle cursor-pointer rounded-lg border border-[#c8934b] px-2.5 py-1.5 text-xs font-bold text-[#ffefc6] transition active:translate-y-px"
+                  className="wood-plank-idle cursor-pointer rounded-lg border border-[#c8934b] px-3 py-2 text-[13px] font-bold leading-none text-[#ffefc6] transition active:translate-y-px"
                 >
                   {trophy.id === 'unity-cert'
                     ? 'Unity Cert'
@@ -123,18 +123,18 @@ export function MobileSectionControls({
 
       {!hasOpenModal && isProjectsArrived && (
         <div className="fixed inset-x-3 bottom-3 z-20">
-          <div className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-2.5">
-            <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold text-[#f3be66]">
-              <Gamepad2 className="h-3.5 w-3.5 shrink-0" />
+          <div className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-3">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-bold text-[#f3be66]">
+              <Gamepad2 className="h-4 w-4 shrink-0" />
               <span>Tap a collectible or choose a project</span>
             </p>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {PROJECTS.map((project) => (
                 <button
                   key={project.id}
                   type="button"
                   onClick={() => onSelectProject(project.id)}
-                  className="wood-plank-idle cursor-pointer rounded-lg border border-[#c8934b] px-2.5 py-1.5 text-xs font-bold text-[#ffefc6] transition active:translate-y-px"
+                  className="wood-plank-idle cursor-pointer rounded-lg border border-[#c8934b] px-3 py-2 text-[13px] font-bold leading-none text-[#ffefc6] transition active:translate-y-px"
                 >
                   {project.title}
                 </button>
@@ -146,18 +146,18 @@ export function MobileSectionControls({
 
       {!hasOpenModal && isSkillsArrived && (
         <div className="fixed inset-x-3 bottom-3 z-20">
-          <div className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-2.5">
-            <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold text-[#f3be66]">
-              <Sword className="h-3.5 w-3.5 shrink-0" />
+          <div className="wood-walnut wood-panel-shadow rounded-xl border-2 border-[#b47c3c] p-3">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-bold text-[#f3be66]">
+              <Sword className="h-4 w-4 shrink-0" />
               <span>Tap a skill branch on the board or select</span>
             </p>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {SKILL_CATEGORIES.map((category) => (
                 <button
                   key={category.id}
                   type="button"
                   onClick={() => onSelectSkillCategory(category.id)}
-                  className="wood-plank-idle cursor-pointer rounded-lg border border-[#c8934b] px-2.5 py-1.5 text-xs font-bold text-[#ffefc6] transition active:translate-y-px"
+                  className="wood-plank-idle cursor-pointer rounded-lg border border-[#c8934b] px-3 py-2 text-[13px] font-bold leading-none text-[#ffefc6] transition active:translate-y-px"
                 >
                   {category.title}
                 </button>
@@ -172,7 +172,7 @@ export function MobileSectionControls({
           <button
             type="button"
             onClick={onOpenContactMailbox}
-            className="wood-plank-active wood-panel-shadow inline-flex cursor-pointer items-center gap-2 rounded-xl border-2 border-[#ffe08a] px-4 py-2.5 text-xs font-bold text-[#fff8e8] transition active:translate-y-px"
+            className="wood-plank-active wood-panel-shadow inline-flex cursor-pointer items-center gap-2 rounded-xl border-2 border-[#ffe08a] px-5 py-3 text-sm font-bold text-[#fff8e8] transition active:translate-y-px"
           >
             <Mail className="h-4 w-4 text-[#fff3cf]" />
             <span>Open Mailbox &amp; Contact Letter</span>

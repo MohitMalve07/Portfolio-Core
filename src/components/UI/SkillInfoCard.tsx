@@ -1,10 +1,22 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Code2, Cpu, Globe, Layers, X } from 'lucide-react';
-import type { SkillCategory } from '../../data/skills';
+import {
+  SKILL_CATEGORIES,
+  type SkillCategory,
+  type SkillCategoryId,
+} from '../../data/skills';
+import { MobileItemTabs } from './MobileItemTabs';
+
+const SKILL_TABS: readonly { id: SkillCategoryId; label: string }[] =
+  SKILL_CATEGORIES.map((c) => ({
+    id: c.id,
+    label: c.title,
+  }));
 
 interface SkillInfoCardProps {
   category: SkillCategory | null;
+  onSelectSkillCategory?: (id: SkillCategoryId) => void;
   onClose: () => void;
 }
 
@@ -19,7 +31,11 @@ const CATEGORY_ICON = {
  * Compact dark walnut & golden-beveled card showing skills, description,
  * and related projects for the selected Skill Tree branch.
  */
-export function SkillInfoCard({ category, onClose }: SkillInfoCardProps) {
+export function SkillInfoCard({
+  category,
+  onSelectSkillCategory,
+  onClose,
+}: SkillInfoCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -72,10 +88,10 @@ export function SkillInfoCard({ category, onClose }: SkillInfoCardProps) {
                 <Icon className="h-5 w-5" strokeWidth={2.2} />
               </div>
               <div className="min-w-0">
-                <p className="text-[11px] font-bold tracking-wider text-[#f3be66] uppercase">
+                <p className="text-xs font-bold tracking-wider text-[#f3be66] uppercase md:text-[11px]">
                   Skill Branch
                 </p>
-                <h2 className="font-display game-label-shadow mt-0.5 text-lg font-bold leading-snug text-[#fff4d4]">
+                <h2 className="font-display game-label-shadow mt-0.5 text-xl font-bold leading-snug text-[#fff4d4] md:text-lg">
                   {category.title}
                 </h2>
               </div>
@@ -91,9 +107,17 @@ export function SkillInfoCard({ category, onClose }: SkillInfoCardProps) {
             </button>
           </div>
 
+          {onSelectSkillCategory && (
+            <MobileItemTabs
+              options={SKILL_TABS}
+              activeId={category.id}
+              onSelect={onSelectSkillCategory}
+            />
+          )}
+
           {/* Summary, Skill Badges & Related Projects */}
           <div className="relative mt-3 space-y-3 text-sm text-[#f3e4c8]">
-            <p className="text-[13px] leading-relaxed text-[#efe0c4]">
+            <p className="text-[15px] leading-relaxed text-[#efe0c4] md:text-[13px]">
               {category.summary}
             </p>
 
@@ -101,7 +125,7 @@ export function SkillInfoCard({ category, onClose }: SkillInfoCardProps) {
               {category.skills.map((skill) => (
                 <span
                   key={skill}
-                  className="rounded-md border border-[#b47c3c]/80 bg-[#251309]/90 px-2.5 py-1 text-xs font-bold text-[#ffe29e]"
+                  className="rounded-md border border-[#b47c3c]/80 bg-[#251309]/90 px-3 py-1.5 text-[13px] font-bold text-[#ffe29e] md:px-2.5 md:py-1 md:text-xs"
                 >
                   {skill}
                 </span>
@@ -109,7 +133,7 @@ export function SkillInfoCard({ category, onClose }: SkillInfoCardProps) {
             </div>
 
             {category.relatedProjects.length > 0 && (
-              <div className="rounded-lg border border-[#8e5d29]/55 bg-[#221209]/75 px-3 py-2 text-xs text-[#dfcca9]">
+              <div className="rounded-lg border border-[#8e5d29]/55 bg-[#221209]/75 px-3 py-2 text-[13px] text-[#dfcca9] md:text-xs">
                 <span className="font-bold text-[#f3be66]">Applied in: </span>
                 <span>{category.relatedProjects.join(' · ')}</span>
               </div>

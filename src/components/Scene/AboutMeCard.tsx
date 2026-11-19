@@ -135,19 +135,19 @@ export function AboutMePaperNote({
         />
 
         <header className="mb-2.5">
-          <h2 className="text-[24px] font-bold leading-none tracking-tight text-[#231207] sm:text-[26px]">
+          <h2 className="text-[26px] font-bold leading-none tracking-tight text-[#231207]">
             {ABOUT_ME_CONTENT.name}
           </h2>
-          <p className="mt-0.5 text-[15px] font-semibold leading-snug text-[#462a16] sm:text-[15.5px]">
+          <p className="mt-0.5 text-[16.5px] font-semibold leading-snug text-[#462a16] md:text-[15.5px]">
             {ABOUT_ME_CONTENT.headline}
           </p>
         </header>
 
-        <p className="mb-2.5 text-[15px] leading-[1.28] text-[#2e1c0f] sm:text-[15.5px]">
+        <p className="mb-2.5 text-[16.5px] leading-[1.32] text-[#2e1c0f] md:text-[15.5px] md:leading-[1.28]">
           {ABOUT_ME_CONTENT.summary}
         </p>
 
-        <ul className="space-y-0.5 text-[14.5px] leading-[1.25] text-[#2b1a0e] sm:text-[15px]">
+        <ul className="space-y-1 text-[15.5px] leading-[1.28] text-[#2b1a0e] md:space-y-0.5 md:text-[15px] md:leading-[1.25]">
           {ABOUT_ME_CONTENT.facts.map((fact) => (
             <li key={fact}>- {fact}</li>
           ))}

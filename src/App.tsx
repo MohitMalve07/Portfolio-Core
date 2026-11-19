@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Gamepad2, LayoutGrid, Mail, Sword, Trophy } from 'lucide-react';
 import { WorkshopScene } from './components/Scene/WorkshopScene';
 import { AchievementCard } from './components/UI/AchievementCard';
@@ -114,6 +114,35 @@ export function App() {
   useEffect(() => {
     workshopAudio.setSectionFocus(activeSection);
   }, [activeSection]);
+
+  const lastAutoSectionRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (isWebGLFallback || arrivedSection === null || activeSection !== arrivedSection) {
+      if (activeSection === null) lastAutoSectionRef.current = null;
+      return;
+    }
+    if (typeof window === 'undefined' || window.innerWidth >= 768) return;
+    if (lastAutoSectionRef.current === arrivedSection) return;
+    lastAutoSectionRef.current = arrivedSection;
+
+    if (arrivedSection === 'experience' && !selectedTrophyId) {
+      selectTrophy('peblo', false);
+    } else if (arrivedSection === 'projects' && !selectedProjectId) {
+      selectProject('crash-course', false);
+    } else if (arrivedSection === 'skills' && !selectedSkillCategoryId) {
+      selectSkillCategory('programming', false);
+    }
+  }, [
+    activeSection,
+    arrivedSection,
+    isWebGLFallback,
+    selectedTrophyId,
+    selectedProjectId,
+    selectedSkillCategoryId,
+    selectTrophy,
+    selectProject,
+    selectSkillCategory,
+  ]);
 
   const effectiveArrived = isWebGLFallback ? activeSection : arrivedSection;
   const isAboutArrived =
@@ -314,10 +343,19 @@ export function App() {
       )}
 
       {/* Interactive detail cards */}
-      <AchievementCard achievement={selectedTrophy} onClose={clearTrophy} />
-      <ProjectInfoCard project={selectedProject} onClose={clearProject} />
+      <AchievementCard
+        achievement={selectedTrophy}
+        onSelectTrophy={selectTrophy}
+        onClose={clearTrophy}
+      />
+      <ProjectInfoCard
+        project={selectedProject}
+        onSelectProject={selectProject}
+        onClose={clearProject}
+      />
       <SkillInfoCard
         category={selectedSkillCategory}
+        onSelectSkillCategory={selectSkillCategory}
         onClose={clearSkillCategory}
       />
       <ContactLetter visible={showContactLetter} onClose={closeContactLetter} />
