@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ArrowLeft, Gamepad2, Mail, Sword, Trophy } from 'lucide-react';
+import { ArrowLeft, Gamepad2, LayoutGrid, Mail, Sword, Trophy } from 'lucide-react';
 import { WorkshopScene } from './components/Scene/WorkshopScene';
 import { AchievementCard } from './components/UI/AchievementCard';
 import { AudioToggle } from './components/UI/AudioToggle';
 import { ContactLetter } from './components/UI/ContactLetter';
 import { LoadingScreen } from './components/UI/LoadingScreen';
 import { MainMenu } from './components/UI/MainMenu';
+import { MobileSectionControls } from './components/UI/MobileSectionControls';
 import { ProjectInfoCard } from './components/UI/ProjectInfoCard';
 import { SkillInfoCard } from './components/UI/SkillInfoCard';
 import { Workshop2DFallback } from './components/UI/Workshop2DFallback';
@@ -140,8 +141,15 @@ export function App() {
       : null;
   const showContactLetter = isContactArrived && contactLetterStage === 'open';
 
+  const hasArrivedSection =
+    isAboutArrived ||
+    isExperienceArrived ||
+    isProjectsArrived ||
+    isSkillsArrived ||
+    isContactArrived;
+
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#120b07]">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#120b07]">
       {isWebGLFallback ? (
         <Workshop2DFallback
           activeSection={activeSection}
@@ -177,15 +185,56 @@ export function App() {
         onSelectSection={selectSection}
       />
 
-      {/* Compact HUD close/back control outside the 3D focal items */}
-      {(isAboutArrived ||
-        isExperienceArrived ||
-        isProjectsArrived ||
-        isSkillsArrived ||
-        isContactArrived) && (
+      {/* Mobile top-right HUD (kept clear of bottom quick-pickers and detail cards) */}
+      <div className="fixed right-3 top-3 z-30 flex items-center gap-1.5 md:hidden">
+        {activeSection !== null ? (
+          <button
+            type="button"
+            onClick={closeSection}
+            aria-label="Back to Workshop"
+            className="wood-walnut wood-panel-shadow inline-flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl border-2 border-[#c8934b] px-3 text-xs font-bold text-[#ffefc6] transition hover:border-[#ffe08a] hover:brightness-110 active:translate-y-px"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 text-[#f5b951]" />
+            <span className="font-display game-label-shadow tracking-wide">
+              Back
+            </span>
+          </button>
+        ) : (
+          !isWebGLFallback && (
+            <button
+              type="button"
+              onClick={handleEnterFallback}
+              title="Switch to Fast 2D Portfolio View"
+              className="wood-walnut wood-panel-shadow inline-flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl border-2 border-[#b47c3c] px-2.5 text-xs font-bold text-[#ffefc6] transition hover:border-[#ffe08a] hover:brightness-110 active:translate-y-px"
+            >
+              <LayoutGrid className="h-3.5 w-3.5 text-[#f5b951]" />
+              <span>2D View</span>
+            </button>
+          )
+        )}
+        {isSceneReady && <AudioToggle compact />}
+      </div>
+
+      {/* Desktop 2D View quick toggle on overview */}
+      {activeSection === null && !isWebGLFallback && isSceneReady && (
+        <div className="fixed right-5 top-5 z-30 hidden md:block">
+          <button
+            type="button"
+            onClick={handleEnterFallback}
+            title="Switch to Fast 2D Portfolio View"
+            className="wood-walnut wood-panel-shadow inline-flex cursor-pointer items-center gap-1.5 rounded-xl border-2 border-[#b47c3c] px-3 py-1.5 text-xs font-bold text-[#ffefc6] transition hover:scale-[1.03] hover:border-[#ffe08a] hover:brightness-110 active:translate-y-px"
+          >
+            <LayoutGrid className="h-3.5 w-3.5 text-[#f5b951]" />
+            <span>2D View</span>
+          </button>
+        </div>
+      )}
+
+      {/* Desktop HUD close/back control outside the 3D focal items */}
+      {hasArrivedSection && (
         <div
           className={[
-            'fixed right-5 z-30',
+            'fixed right-5 z-30 hidden md:block',
             isExperienceArrived ||
             isProjectsArrived ||
             isSkillsArrived ||
@@ -211,9 +260,25 @@ export function App() {
         </div>
       )}
 
-      {/* Subtle prompts when arriving at interactive 3D sections */}
+      {/* Mobile 1-tap quick navigation, readable About overlay & item pickers */}
+      <MobileSectionControls
+        activeSection={activeSection}
+        arrivedSection={arrivedSection}
+        isWebGLFallback={isWebGLFallback}
+        selectedTrophyId={selectedTrophyId}
+        selectedProjectId={selectedProjectId}
+        selectedSkillCategoryId={selectedSkillCategoryId}
+        contactLetterStage={contactLetterStage}
+        onSelectSection={selectSection}
+        onSelectTrophy={selectTrophy}
+        onSelectProject={selectProject}
+        onSelectSkillCategory={selectSkillCategory}
+        onOpenContactMailbox={openContactMailbox}
+      />
+
+      {/* Subtle desktop prompts when arriving at interactive 3D sections */}
       {!isWebGLFallback && isExperienceArrived && !selectedTrophy && (
-        <div className="fixed bottom-5 right-5 z-20 hidden sm:block">
+        <div className="fixed bottom-5 right-5 z-20 hidden md:block">
           <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-xs font-semibold text-[#f3dfb8]">
             <Trophy className="h-4 w-4 text-[#f5b449]" />
             <span>Click any of the four trophies on the top shelf to inspect</span>
@@ -222,7 +287,7 @@ export function App() {
       )}
 
       {!isWebGLFallback && isProjectsArrived && !selectedProject && (
-        <div className="fixed bottom-5 right-5 z-20 hidden sm:block">
+        <div className="fixed bottom-5 right-5 z-20 hidden md:block">
           <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-xs font-semibold text-[#f3dfb8]">
             <Gamepad2 className="h-4 w-4 text-[#f5b449]" />
             <span>Click any collectible on the desk shelf to inspect</span>
@@ -231,7 +296,7 @@ export function App() {
       )}
 
       {!isWebGLFallback && isSkillsArrived && !selectedSkillCategory && (
-        <div className="fixed bottom-5 right-5 z-20 hidden sm:block">
+        <div className="fixed bottom-5 right-5 z-20 hidden md:block">
           <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-xs font-semibold text-[#f3dfb8]">
             <Sword className="h-4 w-4 text-[#f5b449]" />
             <span>Click any of the four skill branches on the board to inspect</span>
@@ -240,7 +305,7 @@ export function App() {
       )}
 
       {!isWebGLFallback && isContactArrived && contactLetterStage === 'closed' && (
-        <div className="fixed bottom-5 right-5 z-20 hidden sm:block">
+        <div className="fixed bottom-5 right-5 z-20 hidden md:block">
           <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border-2 border-[#b47c3c] px-4 py-2 text-xs font-semibold text-[#f3dfb8]">
             <Mail className="h-4 w-4 text-[#f5b449]" />
             <span>Click the mailbox to open your letter</span>

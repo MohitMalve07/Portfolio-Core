@@ -166,7 +166,7 @@ export function ContactLetter({ visible, onClose }: ContactLetterProps) {
     <aside
       role="dialog"
       aria-label="Contact letter from Mohit"
-      className="fixed bottom-4 left-4 right-4 z-30 md:bottom-4 md:left-auto md:right-6 md:top-auto md:w-[410px] xl:bottom-auto xl:right-8 xl:top-[calc(50%+18px)] xl:w-[450px] xl:-translate-y-1/2"
+      className="fixed bottom-3 left-3 right-3 z-30 md:bottom-4 md:left-auto md:right-6 md:top-auto md:w-[410px] xl:bottom-auto xl:right-8 xl:top-[calc(50%+18px)] xl:w-[450px] xl:-translate-y-1/2"
     >
       <div
         ref={letterRef}
@@ -183,7 +183,7 @@ export function ContactLetter({ visible, onClose }: ContactLetterProps) {
         </div>
 
         {/* Aged parchment sheet */}
-        <div className="paper-note-surface font-handwritten relative max-h-[calc(100vh-5.75rem)] overflow-y-auto px-5.5 pb-4 pt-4 text-[#2b1a0e] shadow-[inset_0_0_28px_rgba(139,98,52,0.24),inset_0_1px_0_rgba(255,255,255,0.65)]">
+        <div className="paper-note-surface font-handwritten relative max-h-[calc(100dvh-4.75rem)] overflow-y-auto px-4.5 pb-4 pt-4 text-[#2b1a0e] shadow-[inset_0_0_28px_rgba(139,98,52,0.24),inset_0_1px_0_rgba(255,255,255,0.65)] sm:px-5.5">
           {/* Minimal golden inner hairline accent */}
           <div
             aria-hidden="true"

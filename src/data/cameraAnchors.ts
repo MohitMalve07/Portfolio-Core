@@ -75,3 +75,67 @@ export function getCameraPoseForSection(section: SectionId | null): CameraPose {
   if (!section) return OVERVIEW_CAMERA_POSE;
   return SECTION_CAMERA_POSES[section] ?? OVERVIEW_CAMERA_POSE;
 }
+
+interface ResponsivePoseBounds {
+  refAspect: number;
+  maxFov: number;
+  maxDistScale: number;
+}
+
+const RESPONSIVE_SECTION_BOUNDS: Record<'overview' | SectionId, ResponsivePoseBounds> = {
+  overview: { refAspect: 1.35, maxFov: 74, maxDistScale: 1.0 },
+  about: { refAspect: 1.25, maxFov: 60, maxDistScale: 1.35 },
+  experience: { refAspect: 1.45, maxFov: 70, maxDistScale: 1.32 },
+  projects: { refAspect: 1.45, maxFov: 68, maxDistScale: 1.35 },
+  skills: { refAspect: 1.45, maxFov: 72, maxDistScale: 1.3 },
+  contact: { refAspect: 1.4, maxFov: 64, maxDistScale: 1.25 },
+};
+
+const DEG_TO_RAD = Math.PI / 180;
+const RAD_TO_DEG = 180 / Math.PI;
+
+/**
+ * Expands vertical FOV (and pulls close-up cameras gently back within safe
+ * room bounds) on narrow/portrait screens so collectibles, trophies, and skill
+ * branches stay inside the horizontal viewport without clipping.
+ */
+export function getResponsiveCameraPose(
+  section: SectionId | null,
+  aspect: number,
+): CameraPose {
+  const base = getCameraPoseForSection(section);
+  if (!Number.isFinite(aspect) || aspect <= 0) return base;
+
+  const { refAspect, maxFov, maxDistScale } =
+    RESPONSIVE_SECTION_BOUNDS[section ?? 'overview'];
+
+  if (aspect >= refAspect) return base;
+
+  const neededRatio = refAspect / Math.max(aspect, 0.42);
+  const baseHalfTan = Math.tan(base.fov * 0.5 * DEG_TO_RAD);
+  const maxHalfTan = Math.tan(maxFov * 0.5 * DEG_TO_RAD);
+  const idealHalfTan = baseHalfTan * neededRatio;
+  const appliedHalfTan = Math.min(idealHalfTan, maxHalfTan);
+  const effectiveFov = Math.atan(appliedHalfTan) * 2 * RAD_TO_DEG;
+
+  const distScale = Math.min(
+    maxDistScale,
+    Math.max(1, idealHalfTan / appliedHalfTan),
+  );
+
+  if (distScale <= 1.001) {
+    return { ...base, fov: effectiveFov };
+  }
+
+  const [px, py, pz] = base.position;
+  const [tx, ty, tz] = base.target;
+  return {
+    position: [
+      tx + (px - tx) * distScale,
+      ty + (py - ty) * distScale,
+      tz + (pz - tz) * distScale,
+    ],
+    target: base.target,
+    fov: effectiveFov,
+  };
+}

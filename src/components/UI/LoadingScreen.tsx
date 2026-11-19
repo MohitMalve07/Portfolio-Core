@@ -102,6 +102,18 @@ export function LoadingScreen({
                 <span>{clampedProgress}%</span>
               </div>
             </div>
+
+            {onOpenFallback && (
+              <div className="mt-5 border-t border-[#8e5d29]/45 pt-4">
+                <button
+                  type="button"
+                  onClick={onOpenFallback}
+                  className="wood-plank-idle cursor-pointer rounded-xl border border-[#b47c3c] px-4 py-1.5 text-xs font-bold text-[#ffefc6] transition hover:border-[#ffd27d] hover:brightness-110"
+                >
+                  Slow connection or mobile? Open Fast 2D View
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

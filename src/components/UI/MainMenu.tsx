@@ -91,15 +91,15 @@ export function MainMenu({ activeSection, onSelectSection }: MainMenuProps) {
   return (
     <>
       {/* Mobile / small screen toggle button */}
-      <div className="fixed left-4 top-4 z-30 md:hidden">
+      <div className="fixed left-3 top-3 z-30 md:hidden">
         <button
           type="button"
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? 'Close workshop menu' : 'Open workshop menu'}
-          className="wood-walnut wood-panel-shadow flex items-center gap-2 rounded-xl border-2 border-[#c68f48] px-3.5 py-2 text-sm font-bold text-[#ffefc6] transition hover:brightness-110"
+          className="wood-walnut wood-panel-shadow flex h-8.5 items-center gap-1.5 rounded-xl border-2 border-[#c68f48] px-3 text-xs font-bold text-[#ffefc6] transition hover:brightness-110 sm:gap-2 sm:px-3.5 sm:text-sm"
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
           <span className="font-display game-label-shadow tracking-wide">Workshop Menu</span>
         </button>
       </div>
@@ -122,8 +122,8 @@ export function MainMenu({ activeSection, onSelectSection }: MainMenuProps) {
           'md:left-4 md:top-1/2 md:w-[290px] md:-translate-y-1/2 md:translate-x-0 md:opacity-100 xl:left-7 xl:w-[322px]',
           // Mobile: collapsible wooden board drawer
           mobileOpen
-            ? 'left-4 top-16 w-[min(88vw,312px)] translate-x-0 opacity-100'
-            : 'pointer-events-none left-4 top-16 w-[min(88vw,312px)] -translate-x-6 opacity-0 md:pointer-events-auto',
+            ? 'left-3 top-14 max-h-[calc(100dvh-4.5rem)] w-[min(88vw,312px)] translate-x-0 overflow-y-auto opacity-100'
+            : 'pointer-events-none left-3 top-14 w-[min(88vw,312px)] -translate-x-6 opacity-0 md:pointer-events-auto md:max-h-none md:overflow-visible',
         ].join(' ')}
       >
         {/* Outer wooden rim & dark carved border */}

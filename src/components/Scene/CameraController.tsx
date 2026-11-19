@@ -3,7 +3,7 @@ import { useThree } from '@react-three/fiber';
 import gsap from 'gsap';
 import * as THREE from 'three';
 import {
-  getCameraPoseForSection,
+  getResponsiveCameraPose,
   OVERVIEW_CAMERA_POSE,
 } from '../../data/cameraAnchors';
 import type { SectionId } from '../../data/navigation';
@@ -23,35 +23,41 @@ export function CameraController({
   onTransitionStart,
   onTransitionComplete,
 }: CameraControllerProps) {
-  const { camera } = useThree();
+  const camera = useThree((s) => s.camera);
+  const size = useThree((s) => s.size);
+  const aspect = size.height > 0 ? size.width / size.height : 16 / 9;
   const initializedRef = useRef(false);
+  const prevSectionRef = useRef<SectionId | null | undefined>(undefined);
   const currentTargetRef = useRef(new THREE.Vector3(...OVERVIEW_CAMERA_POSE.target));
   const activeTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Snap to exact Blender overview camera on initial mount
+  // Snap to responsive overview camera on initial mount
   useLayoutEffect(() => {
     if (initializedRef.current) return;
     initializedRef.current = true;
 
-    camera.position.set(...OVERVIEW_CAMERA_POSE.position);
-    currentTargetRef.current.set(...OVERVIEW_CAMERA_POSE.target);
+    const initial = getResponsiveCameraPose(null, aspect);
+    camera.position.set(...initial.position);
+    currentTargetRef.current.set(...initial.target);
     camera.up.set(0, 1, 0);
     camera.lookAt(currentTargetRef.current);
 
     if (camera instanceof THREE.PerspectiveCamera) {
-      camera.fov = OVERVIEW_CAMERA_POSE.fov;
+      camera.fov = initial.fov;
       camera.near = 0.05;
       camera.far = 100;
       camera.updateProjectionMatrix();
     }
-  }, [camera]);
+  }, [camera, aspect]);
 
   useEffect(() => {
-    const dest = getCameraPoseForSection(activeSection);
+    const dest = getResponsiveCameraPose(activeSection, aspect);
     const destPos = new THREE.Vector3(...dest.position);
     const destTarget = new THREE.Vector3(...dest.target);
     const isPerspective = camera instanceof THREE.PerspectiveCamera;
     const fovDelta = isPerspective ? Math.abs(camera.fov - dest.fov) : 0;
+    const isResizeOnly = prevSectionRef.current === activeSection;
+    prevSectionRef.current = activeSection;
 
     // Cancel any active camera flight before starting the next one
     if (activeTimelineRef.current) {
@@ -62,8 +68,11 @@ export function CameraController({
     const posDelta = camera.position.distanceTo(destPos);
     const targetDelta = currentTargetRef.current.distanceTo(destTarget);
 
-    // Already at destination (e.g. initial load or switching between sections sharing overview)
-    if (posDelta < 0.005 && targetDelta < 0.005 && fovDelta < 0.05) {
+    // Immediate snap when already at destination or adjusting solely for viewport resize
+    if (
+      isResizeOnly ||
+      (posDelta < 0.005 && targetDelta < 0.005 && fovDelta < 0.05)
+    ) {
       camera.position.copy(destPos);
       currentTargetRef.current.copy(destTarget);
       if (isPerspective) {
@@ -137,7 +146,7 @@ export function CameraController({
         activeTimelineRef.current = null;
       }
     };
-  }, [activeSection, camera, onTransitionStart, onTransitionComplete]);
+  }, [activeSection, aspect, camera, onTransitionStart, onTransitionComplete]);
 
   return null;
 }

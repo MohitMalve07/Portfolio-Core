@@ -50,7 +50,7 @@ export function AchievementCard({ achievement, onClose }: AchievementCardProps) 
       ref={cardRef}
       role="dialog"
       aria-label={achievement.trophyLabel}
-      className="fixed bottom-4 right-4 left-4 z-30 md:left-auto md:bottom-5 md:right-5 md:w-[410px]"
+      className="fixed bottom-3 right-3 left-3 z-30 md:left-auto md:bottom-5 md:right-5 md:w-[410px]"
     >
       {/* Carved wood outer rim with warm gold highlight */}
       <div className="wood-panel-shadow relative rounded-xl border-[3px] border-[#211007] bg-gradient-to-b from-[#9c693a] via-[#6e4522] to-[#432612] p-[5px]">
@@ -60,7 +60,7 @@ export function AchievementCard({ achievement, onClose }: AchievementCardProps) 
         />
 
         {/* Recessed dark walnut interior */}
-        <div className="wood-walnut relative rounded-lg border-2 border-[#231107] p-4 shadow-[inset_0_6px_16px_rgba(8,3,1,0.75)] sm:p-4.5">
+        <div className="wood-walnut relative max-h-[70dvh] overflow-y-auto rounded-lg border-2 border-[#231107] p-4 shadow-[inset_0_6px_16px_rgba(8,3,1,0.75)] sm:p-4.5 md:max-h-none md:overflow-visible">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-[5px] rounded-md border border-[#d6a259]/25"

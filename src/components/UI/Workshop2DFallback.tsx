@@ -25,12 +25,12 @@ export function Workshop2DFallback({
 }: Workshop2DFallbackProps) {
   return (
     <div className="relative flex h-full w-full overflow-y-auto bg-[radial-gradient(circle_at_24%_22%,rgba(235,134,42,0.22),transparent_48%),radial-gradient(circle_at_78%_76%,rgba(244,174,78,0.12),transparent_52%),linear-gradient(155deg,#1d1009_0%,#140b06_55%,#0e0704_100%)] px-4 pb-20 pt-16 md:pl-[330px] md:pr-8 md:pt-8 xl:pl-[376px]">
-      {/* Subtle 2D notice + Retry 3D action when overview is active (clear of Back to Workshop) */}
+      {/* Subtle 2D notice + Retry 3D action when overview is active */}
       {activeSection === null && (
-        <div className="fixed right-4 top-4 z-20 flex items-center gap-2">
-          <div className="wood-walnut wood-panel-shadow hidden items-center gap-2 rounded-xl border border-[#b47c3c]/80 px-3 py-1.5 text-xs font-semibold text-[#e9d3ad] sm:inline-flex">
+        <div className="fixed right-5 top-5 z-20 hidden items-center gap-2 md:flex">
+          <div className="wood-walnut wood-panel-shadow inline-flex items-center gap-2 rounded-xl border border-[#b47c3c]/80 px-3 py-1.5 text-xs font-semibold text-[#e9d3ad]">
             <Sparkles className="h-3.5 w-3.5 text-[#f5b951]" />
-            <span>2D Mode (WebGL unavailable on this browser)</span>
+            <span>2D Mode (Interactive View)</span>
           </div>
           <button
             type="button"
@@ -63,7 +63,7 @@ export function Workshop2DFallback({
               <button
                 type="button"
                 onClick={onRetry3D}
-                className="wood-plank-idle inline-flex cursor-pointer items-center gap-2 rounded-xl border-2 border-[#c8934b] px-4 py-2 text-xs font-bold text-[#ffefc6] transition hover:border-[#ffe08a] hover:brightness-110 sm:hidden"
+                className="wood-plank-idle inline-flex cursor-pointer items-center gap-2 rounded-xl border-2 border-[#c8934b] px-4 py-2 text-xs font-bold text-[#ffefc6] transition hover:border-[#ffe08a] hover:brightness-110 md:hidden"
               >
                 <RefreshCw className="h-3.5 w-3.5 text-[#f5b951]" />
                 <span>Retry 3D Scene</span>

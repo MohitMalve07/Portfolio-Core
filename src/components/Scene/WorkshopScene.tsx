@@ -127,12 +127,15 @@ export function WorkshopScene({
   const isContactInteractive =
     activeSection === 'contact' && arrivedSection === 'contact';
 
+  const isCompactViewport =
+    typeof window !== 'undefined' && window.innerWidth < 768;
+
   return (
     <div className="relative h-full w-full overflow-hidden bg-[#1e2b42]">
       <SceneErrorBoundary onError={onSceneError}>
         <Canvas
           shadows={{ type: THREE.PCFSoftShadowMap }}
-          dpr={[1, 1.5]}
+          dpr={isCompactViewport ? [1, 1.25] : [1, 1.5]}
           camera={{
             position: OVERVIEW_CAMERA_POSE.position,
             fov: OVERVIEW_CAMERA_POSE.fov,
